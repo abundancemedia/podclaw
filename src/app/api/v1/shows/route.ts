@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     console.error('Create show error:', err)
     return NextResponse.json(
-      { error: 'Failed to create show', detail: err.message || String(err) },
+      { error: 'Failed to create show' },
       { status: 500 }
     )
   }
