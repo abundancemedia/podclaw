@@ -7,11 +7,10 @@ import { randomUUID } from 'crypto'
  * POST /api/v1/shows — Create a new show
  */
 export async function POST(request: NextRequest) {
+  try {
   // Authenticate
   const auth = await authenticateRequest(request)
   if (!auth.valid) return auth.response
-
-  try {
     const body = await request.json()
 
     // Validate required fields
@@ -96,7 +95,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     console.error('Create show error:', err)
     return NextResponse.json(
-      { error: 'Failed to create show' },
+      { error: 'Failed to create show', detail: err.message || String(err) },
       { status: 500 }
     )
   }
