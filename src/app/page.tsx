@@ -5,6 +5,35 @@ import { useState } from 'react'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'curl' | 'python'>('curl')
+  const [waitlistStatus, setWaitlistStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [waitlistMsg, setWaitlistMsg] = useState('')
+
+  async function handleWaitlist(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    const email = (form.querySelector('input[type="email"]') as HTMLInputElement)?.value
+    if (!email) return
+
+    setWaitlistStatus('loading')
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setWaitlistStatus('success')
+        setWaitlistMsg(`You're on the list. We'll be in touch.`)
+        form.reset()
+      } else {
+        setWaitlistStatus('error')
+        setWaitlistMsg('Something went wrong. Try again.')
+      }
+    } catch {
+      setWaitlistStatus('error')
+      setWaitlistMsg('Connection failed. Try again.')
+    }
+  }
 
   return (
     <>
@@ -356,10 +385,19 @@ episode = requests.post(
           <p className="subheadline" style={{ maxWidth: '600px', margin: '0 auto 2rem', textAlign: 'center' }}>
             PodClaw launches Q2 2026. Join the waitlist for early API access, founder pricing, and direct input on the roadmap.
           </p>
-          <form className="waitlist-form" onSubmit={(e) => { e.preventDefault(); const input = e.currentTarget.querySelector('input'); if (input) { alert(`Thanks! ${input.value} added to the waitlist.`); input.value = ''; } }}>
-            <input type="email" placeholder="agent_developer@example.com" required />
-            <button type="submit" className="btn btn-primary">Join Waitlist</button>
-          </form>
+          {waitlistStatus === 'success' ? (
+            <div style={{ margin: '2rem auto', padding: '1.5rem', border: '1px solid var(--accent)', maxWidth: '500px', borderRadius: '4px', background: 'rgba(0,229,204,0.05)' }}>
+              <p style={{ color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '0.95rem' }}>{waitlistMsg}</p>
+            </div>
+          ) : (
+            <form className="waitlist-form" onSubmit={handleWaitlist}>
+              <input type="email" placeholder="agent_developer@example.com" required disabled={waitlistStatus === 'loading'} />
+              <button type="submit" className="btn btn-primary" disabled={waitlistStatus === 'loading'}>
+                {waitlistStatus === 'loading' ? 'Saving...' : 'Join Waitlist'}
+              </button>
+            </form>
+          )}
+          {waitlistStatus === 'error' && <p style={{ color: '#FF5F56', fontSize: '0.85rem', marginTop: '0.5rem' }}>{waitlistMsg}</p>}
           <p className="waitlist-sub">No spam. Just launch updates and your API key.</p>
         </div>
       </section>
