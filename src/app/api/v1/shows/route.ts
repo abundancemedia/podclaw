@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { authenticateRequest } from '@/lib/auth'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 
 /**
  * POST /api/v1/shows — Create a new show
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     const sql = getDb()
-    const showId = `show_${uuidv4().replace(/-/g, '').slice(0, 16)}`
+    const showId = `show_${randomUUID().replace(/-/g, '').slice(0, 16)}`
 
     await sql`
       INSERT INTO shows (id, api_key, title, description, language, author, owner_name, owner_email, image_url, category, subcategory, explicit, website_url)

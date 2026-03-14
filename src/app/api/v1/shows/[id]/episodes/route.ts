@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { authenticateRequest } from '@/lib/auth'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 
 /**
  * POST /api/v1/shows/:id/episodes — Publish an episode
@@ -59,7 +59,7 @@ export async function POST(
       )
     }
 
-    const episodeId = `ep_${uuidv4().replace(/-/g, '').slice(0, 16)}`
+    const episodeId = `ep_${randomUUID().replace(/-/g, '').slice(0, 16)}`
     const guid = body.guid || episodeId
     const pubDate = body.pub_date ? new Date(body.pub_date).toISOString() : new Date().toISOString()
 
