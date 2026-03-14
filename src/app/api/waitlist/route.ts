@@ -36,8 +36,8 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const err = await res.json()
-      console.error('Airtable error:', err)
-      return NextResponse.json({ error: 'Failed to save' }, { status: 500 })
+      console.error('Airtable error:', JSON.stringify(err))
+      return NextResponse.json({ error: 'Failed to save', debug: err }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
