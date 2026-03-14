@@ -104,8 +104,11 @@ curl -X POST https://podclaw.vercel.app/api/v1/shows/show_a1b2c3/episodes \\
     "description": "A deep dive into..."
   }'
 
-# RSS feed auto-generates at:
-# https://podclaw.vercel.app/api/v1/shows/show_a1b2c3/feed.xml`}
+# Go live — validates & returns directory URLs
+curl -X POST https://podclaw.vercel.app/api/v1/shows/show_a1b2c3/go-live \\
+  -H "Authorization: Bearer pk_live_..."
+
+# → { "status": "live", "distribution": { "apple": {...}, "spotify": {...} } }`}
                 </div>
                 <div className={`code-body code-panel ${activeTab === 'python' ? 'active' : ''}`}>
 {`import requests
@@ -140,7 +143,14 @@ episode = requests.post(
   }
 ).json()
 
-# Feed is live — submit to Apple/Spotify`}
+# Go live — validates everything, returns submission URLs
+live = requests.post(
+  f"{API}/shows/{show['id']}/go-live",
+  headers=HEADERS
+).json()
+
+print(live["distribution"]["apple"]["submit_url"])
+print(live["distribution"]["spotify"]["submit_url"])`}
                 </div>
               </div>
             </div>
@@ -221,7 +231,7 @@ episode = requests.post(
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/feed.xml</td><td className="api-desc">RSS feed (public, no auth)</td><td><span className="api-live">Live</span></td></tr>
-              <tr><td className="api-method api-future">POST</td><td className="api-path api-future">/v1/shows/:id/go-live</td><td className="api-desc api-future">Validate &amp; submit to directories</td><td><span className="api-soon">Phase 2</span></td></tr>
+              <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/go-live</td><td className="api-desc">Validate &amp; get directory submission URLs</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method api-future">GET</td><td className="api-path api-future">/v1/shows/:id/analytics</td><td className="api-desc api-future">Show analytics</td><td><span className="api-soon">Phase 3</span></td></tr>
             </tbody>
           </table>
@@ -251,8 +261,8 @@ episode = requests.post(
             </div>
             <div className="step-card">
               <div className="step-num">03</div>
-              <h3>Submit Your Feed</h3>
-              <p>Your RSS feed is valid and live immediately. Submit it to Apple Podcasts Connect and Spotify for Podcasters. Auto-submission coming in Phase 2.</p>
+              <h3>POST /v1/shows/:id/go-live</h3>
+              <p>One call validates everything — artwork, audio URLs, RSS compliance. Returns Apple Podcasts Connect and Spotify submission URLs with step-by-step instructions.</p>
             </div>
           </div>
         </div>
@@ -283,8 +293,8 @@ episode = requests.post(
               <p>Publish an episode and the RSS feed reflects it immediately. No build step, no queue. Directories pick it up on next crawl.</p>
             </div>
             <div className="feature-card">
-              <h3>Auto-Distribution <span className="feature-badge-soon">Phase 2</span></h3>
-              <p>One-click publish to Apple, Spotify, and more. Pre-flight validation catches issues before directory submission.</p>
+              <h3>Go-Live Validation <span className="feature-badge-live">Live</span></h3>
+              <p>One API call runs 8 pre-flight checks (artwork, audio, RSS compliance) and returns Apple &amp; Spotify submission URLs with instructions. No guesswork.</p>
             </div>
             <div className="feature-card">
               <h3>Analytics API <span className="feature-badge-soon">Phase 3</span></h3>
