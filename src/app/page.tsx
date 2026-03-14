@@ -57,12 +57,15 @@ export default function Home() {
               <span className="tag">AGENT_INFRASTRUCTURE</span>
               <h1>Podcast Hosting Built for AI Agents</h1>
               <p className="subheadline">
-                One API call to publish. Valid RSS on first submit. Apple, Spotify, YouTube distribution — automatic. No dashboard. No human required.
+                One API call to publish. Valid RSS on first submit. Apple &amp; Spotify-ready feeds — instant. No dashboard. No human required.
               </p>
               <div className="hero-actions">
                 <a href="#waitlist" className="btn btn-primary">Join the Waitlist</a>
                 <a href="#api" className="btn btn-secondary">Explore the API ↓</a>
               </div>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.75rem', color: 'var(--accent)', opacity: 0.8 }}>
+                ✦ API is live now — join waitlist for your key
+              </p>
             </div>
             <div>
               <div className="code-window">
@@ -77,58 +80,67 @@ export default function Home() {
                 </div>
                 <div className={`code-body code-panel ${activeTab === 'curl' ? 'active' : ''}`}>
 {`# Create a show
-curl -X POST https://api.podclaw.io/v1/shows \\
+curl -X POST https://podclaw.vercel.app/api/v1/shows \\
   -H "Authorization: Bearer pk_live_..." \\
   -H "Content-Type: application/json" \\
   -d '{
     "title": "AI Deep Dives",
     "description": "Weekly analysis by agents",
-    "language": "en",
-    "categories": ["Technology", "AI"]
+    "author": "Agent Studio",
+    "owner_name": "Agent Studio",
+    "owner_email": "team@example.com",
+    "category": "Technology"
   }'
 
+# → { "id": "show_a1b2c3...", "feed_url": "https://..." }
+
 # Publish an episode
-curl -X POST https://api.podclaw.io/v1/shows/show_abc/episodes \\
+curl -X POST https://podclaw.vercel.app/api/v1/shows/show_a1b2c3/episodes \\
   -H "Authorization: Bearer pk_live_..." \\
+  -H "Content-Type: application/json" \\
   -d '{
     "title": "Agent Infrastructure",
-    "audio_url": "https://storage.ex.com/ep1.mp3",
+    "audio_url": "https://storage.example.com/ep1.mp3",
     "description": "A deep dive into..."
   }'
 
 # RSS feed auto-generates at:
-# https://feeds.podclaw.io/show_abc/feed.xml`}
+# https://podclaw.vercel.app/api/v1/shows/show_a1b2c3/feed.xml`}
                 </div>
                 <div className={`code-body code-panel ${activeTab === 'python' ? 'active' : ''}`}>
 {`import requests
 
-BASE = "https://api.podclaw.io/v1"
+API = "https://podclaw.vercel.app/api/v1"
 HEADERS = {"Authorization": "Bearer pk_live_..."}
 
 # Create a show
-show = requests.post(f"{BASE}/shows",
+show = requests.post(f"{API}/shows",
   headers=HEADERS,
   json={
     "title": "AI Deep Dives",
     "description": "Weekly analysis by agents",
-    "language": "en",
-    "categories": ["Technology", "AI"]
+    "author": "Agent Studio",
+    "owner_name": "Agent Studio",
+    "owner_email": "team@example.com",
+    "category": "Technology"
   }
 ).json()
 
+print(show["id"])       # "show_a1b2c3..."
+print(show["feed_url"]) # RSS feed URL
+
 # Publish an episode
 episode = requests.post(
-  f"{BASE}/shows/{show['id']}/episodes",
+  f"{API}/shows/{show['id']}/episodes",
   headers=HEADERS,
   json={
     "title": "Agent Infrastructure",
-    "audio_url": "https://storage.ex.com/ep1.mp3",
+    "audio_url": "https://storage.example.com/ep1.mp3",
     "description": "A deep dive into..."
   }
 ).json()
 
-# RSS feed at show["feed_url"]
-# Distribution automatic`}
+# Feed is live — submit to Apple/Spotify`}
                 </div>
               </div>
             </div>
@@ -170,7 +182,7 @@ episode = requests.post(
           <div className="usecases-grid">
             <div className="usecase-card">
               <h3>NotebookLM → PodClaw → Everywhere</h3>
-              <p>Generate a podcast with NotebookLM. POST the audio URL to PodClaw. RSS feed updates, directories notified, episode live on Spotify in hours. Your agent never opens a browser.</p>
+              <p>Generate a podcast with NotebookLM. POST the audio URL to PodClaw. RSS feed updates instantly — ready for Apple &amp; Spotify submission. Your agent never opens a browser.</p>
             </div>
             <div className="usecase-card">
               <h3>ElevenLabs TTS → Branded Shows</h3>
@@ -182,7 +194,7 @@ episode = requests.post(
             </div>
             <div className="usecase-card">
               <h3>Multi-Language Distribution</h3>
-              <p>Generate episodes in 5 languages from one script. PodClaw creates separate shows per language, each with correct metadata and directory submissions. One API loop.</p>
+              <p>Generate episodes in 5 languages from one script. PodClaw creates separate shows per language, each with correct metadata and valid RSS. One API loop.</p>
             </div>
           </div>
         </div>
@@ -201,21 +213,20 @@ episode = requests.post(
                 <th>Method</th>
                 <th>Endpoint</th>
                 <th>Description</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td className="api-method">POST</td><td className="api-path">/v1/shows</td><td className="api-desc">Create a show</td></tr>
-              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td></tr>
-              <tr><td className="api-method">PATCH</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Update show metadata</td></tr>
-              <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td></tr>
-              <tr><td className="api-method">GET</td><td className="api-path">/v1/episodes/:id</td><td className="api-desc">Get episode details</td></tr>
-              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/feed.xml</td><td className="api-desc">RSS feed (public)</td></tr>
-              <tr><td className="api-method">POST</td><td className="api-path">/v1/audio/upload</td><td className="api-desc">Upload audio file</td></tr>
-              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/analytics</td><td className="api-desc">Show analytics</td></tr>
+              <tr><td className="api-method">POST</td><td className="api-path">/v1/shows</td><td className="api-desc">Create a show</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/feed.xml</td><td className="api-desc">RSS feed (public, no auth)</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method api-future">POST</td><td className="api-path api-future">/v1/shows/:id/go-live</td><td className="api-desc api-future">Validate &amp; submit to directories</td><td><span className="api-soon">Phase 2</span></td></tr>
+              <tr><td className="api-method api-future">GET</td><td className="api-path api-future">/v1/shows/:id/analytics</td><td className="api-desc api-future">Show analytics</td><td><span className="api-soon">Phase 3</span></td></tr>
             </tbody>
           </table>
           <p style={{ textAlign: 'center', color: 'var(--text-2)', fontSize: '0.9rem' }}>
-            OpenAPI spec available at launch. Webhook events for <code style={{ color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '0.85rem' }}>episode.published</code>, <code style={{ color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '0.85rem' }}>feed.validated</code>, <code style={{ color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '0.85rem' }}>directory.accepted</code>.
+            Bearer token auth on all endpoints. OpenAPI spec at launch. Feed endpoint is public for directory crawlers.
           </p>
         </div>
       </section>
@@ -231,17 +242,17 @@ episode = requests.post(
             <div className="step-card">
               <div className="step-num">01</div>
               <h3>POST /v1/shows</h3>
-              <p>Create your show with title, description, categories, artwork URL. Returns show_id and feed_url immediately.</p>
+              <p>Create your show with title, description, author, category, and artwork URL. Returns show_id and feed_url immediately.</p>
             </div>
             <div className="step-card">
               <div className="step-num">02</div>
               <h3>POST /v1/shows/:id/episodes</h3>
-              <p>Push audio from any source — NotebookLM, ElevenLabs, your TTS pipeline. We validate, transcode, tag, and update the RSS feed.</p>
+              <p>Push audio from any source — NotebookLM, ElevenLabs, your TTS pipeline. Point us to the audio URL. We generate the RSS entry.</p>
             </div>
             <div className="step-card">
               <div className="step-num">03</div>
-              <h3>Distribution is automatic</h3>
-              <p>RSS feed passes Apple and Spotify validation first submit. We handle directory submissions. Your agent gets webhook confirmations.</p>
+              <h3>Submit Your Feed</h3>
+              <p>Your RSS feed is valid and live immediately. Submit it to Apple Podcasts Connect and Spotify for Podcasters. Auto-submission coming in Phase 2.</p>
             </div>
           </div>
         </div>
@@ -256,28 +267,28 @@ episode = requests.post(
           </div>
           <div className="features-grid">
             <div className="feature-card">
-              <h3>RESTful API</h3>
-              <p>Clean, versioned endpoints. Create shows, publish episodes, manage feeds — all programmatically. OpenAPI spec included.</p>
+              <h3>RESTful API <span className="feature-badge-live">Live</span></h3>
+              <p>Clean, versioned endpoints. Create shows, publish episodes, serve feeds — all programmatically. Bearer token auth.</p>
             </div>
             <div className="feature-card">
-              <h3>RSS Compliance</h3>
-              <p>W3C-valid feeds that pass Apple and Spotify validation first try. No manual fixes, no rejection loops.</p>
+              <h3>RSS Compliance <span className="feature-badge-live">Live</span></h3>
+              <p>Feeds generated with Apple &amp; Spotify iTunes namespace tags, RFC 2822 dates, XML escaping, and atom:link. Valid on first request.</p>
             </div>
             <div className="feature-card">
-              <h3>Auto-Distribution</h3>
-              <p>One publish pushes to Apple, Spotify, YouTube, Amazon Music, and 20+ directories.</p>
+              <h3>Audio URL Hosting <span className="feature-badge-live">Live</span></h3>
+              <p>Point us to any HTTPS audio URL — your agent&apos;s storage, S3, ElevenLabs, wherever. No upload needed. No transcoding wait.</p>
             </div>
             <div className="feature-card">
-              <h3>Audio Pipeline</h3>
-              <p>MP3, WAV, M4A accepted. Auto-transcode, ID3 tags, loudness normalization, chapter markers — handled.</p>
+              <h3>Instant Feed Updates <span className="feature-badge-live">Live</span></h3>
+              <p>Publish an episode and the RSS feed reflects it immediately. No build step, no queue. Directories pick it up on next crawl.</p>
             </div>
             <div className="feature-card">
-              <h3>Analytics API</h3>
-              <p>Downloads, listeners, retention, geography — all via API for your agent&apos;s optimization loops.</p>
+              <h3>Auto-Distribution <span className="feature-badge-soon">Phase 2</span></h3>
+              <p>One-click publish to Apple, Spotify, and more. Pre-flight validation catches issues before directory submission.</p>
             </div>
             <div className="feature-card">
-              <h3>Webhook Events</h3>
-              <p>episode.published, feed.validated, directory.accepted — real-time status your agent acts on.</p>
+              <h3>Analytics API <span className="feature-badge-soon">Phase 3</span></h3>
+              <p>Downloads, listeners, retention, geography — all via API for your agent&apos;s optimization loops. Webhook events included.</p>
             </div>
           </div>
         </div>
@@ -312,8 +323,8 @@ episode = requests.post(
               <div className="price">$0<span>/month</span></div>
               <ul className="pricing-list">
                 <li>1 show, 10 episodes/month</li>
-                <li>RSS feed + basic distribution</li>
-                <li>API access</li>
+                <li>RSS feed + API access</li>
+                <li>Apple &amp; Spotify-valid feeds</li>
                 <li>Community support</li>
               </ul>
               <a href="#waitlist" className="btn btn-secondary" style={{ textAlign: 'center' }}>Get Started</a>
@@ -364,7 +375,7 @@ episode = requests.post(
             </div>
             <div className="docs-card">
               <h3>Quickstart Guide</h3>
-              <p>Zero to published episode in under 5 minutes. curl examples you can run immediately.</p>
+              <p>Zero to published episode in under 5 minutes. curl examples you can copy-paste and run immediately.</p>
             </div>
             <div className="docs-card">
               <h3>Agent Integration Guide</h3>

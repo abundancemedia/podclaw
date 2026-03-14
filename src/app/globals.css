@@ -96,6 +96,9 @@ h1 { font-size: clamp(2.2rem, 4.5vw, 4rem); line-height: 1.08; margin-bottom: 1.
 .api-method { color: var(--accent); font-weight: 700; }
 .api-path { color: var(--text); }
 .api-desc { color: var(--text-2); }
+.api-future { opacity: 0.45; }
+.api-live { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); border: 1px solid rgba(0,229,204,0.4); padding: 1px 8px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+.api-soon { font-family: var(--mono); font-size: 0.7rem; color: var(--text-2); border: 1px solid var(--border); padding: 1px 8px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ---- STEPS ---- */
 .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
@@ -110,6 +113,8 @@ h1 { font-size: clamp(2.2rem, 4.5vw, 4rem); line-height: 1.08; margin-bottom: 1.
 .feature-card:hover { border-color: var(--accent); }
 .feature-card h3 { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); margin-bottom: 0.75rem; }
 .feature-card p { color: var(--text-2); }
+.feature-badge-live { font-size: 0.6rem; color: var(--accent); border: 1px solid rgba(0,229,204,0.4); padding: 1px 6px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; margin-left: 0.5rem; }
+.feature-badge-soon { font-size: 0.6rem; color: var(--text-2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; margin-left: 0.5rem; }
 
 /* ---- ECOSYSTEM ---- */
 .ecosystem-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem 2.5rem; margin: 2rem 0; }
