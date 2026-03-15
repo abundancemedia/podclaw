@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { authenticateRequest } from '@/lib/auth'
+import { checkEpisodeLimit } from '@/lib/limits'
 import { randomUUID } from 'crypto'
 
 /**
@@ -10,9 +11,13 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Authenticate
+  // Authenticate (includes rate limit check)
   const auth = await authenticateRequest(request)
   if (!auth.valid) return auth.response
+
+  // Check monthly episode limit for this tier
+  const limitResponse = await checkEpisodeLimit(auth.apiKey, auth.plan)
+  if (limitResponse) return limitResponse
 
   const { id: showId } = await params
 

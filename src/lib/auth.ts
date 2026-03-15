@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from './db'
+import { checkRateLimit } from './limits'
 
 export interface AuthResult {
   valid: true
   apiKey: string
   showId: string | null
+  plan: string
 }
 
 export interface AuthError {
@@ -14,7 +16,8 @@ export interface AuthError {
 
 /**
  * Validate a Bearer token against the api_keys table.
- * Returns the key row if valid, or a 401 response if not.
+ * Also enforces per-minute rate limits.
+ * Returns the key row if valid, or a 401/429 response if not.
  */
 export async function authenticateRequest(
   request: NextRequest
@@ -44,7 +47,7 @@ export async function authenticateRequest(
   }
 
   const sql = getDb()
-  const rows = await sql`SELECT key, show_id FROM api_keys WHERE key = ${token}`
+  const rows = await sql`SELECT key, show_id, plan FROM api_keys WHERE key = ${token}`
 
   if (rows.length === 0) {
     return {
@@ -56,9 +59,18 @@ export async function authenticateRequest(
     }
   }
 
+  const plan = rows[0].plan || 'free'
+
+  // Check rate limit
+  const rateLimitResponse = await checkRateLimit(token, plan)
+  if (rateLimitResponse) {
+    return { valid: false, response: rateLimitResponse }
+  }
+
   return {
     valid: true,
     apiKey: rows[0].key,
     showId: rows[0].show_id,
+    plan,
   }
 }

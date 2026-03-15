@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { authenticateRequest } from '@/lib/auth'
+import { checkShowLimit } from '@/lib/limits'
 import { randomUUID } from 'crypto'
 
 /**
@@ -8,9 +9,14 @@ import { randomUUID } from 'crypto'
  */
 export async function POST(request: NextRequest) {
   try {
-  // Authenticate
+  // Authenticate (includes rate limit check)
   const auth = await authenticateRequest(request)
   if (!auth.valid) return auth.response
+
+    // Check show limit for this tier
+    const limitResponse = await checkShowLimit(auth.apiKey, auth.plan)
+    if (limitResponse) return limitResponse
+
     const body = await request.json()
 
     // Validate required fields
