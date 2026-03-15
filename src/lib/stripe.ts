@@ -7,10 +7,7 @@ export function getStripe(): Stripe {
     throw new Error('STRIPE_SECRET_KEY not configured. Add it to Vercel environment variables.')
   }
   if (!stripeInstance) {
-    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-12-18.acacia' as any,
-      typescript: true,
-    })
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY)
   }
   return stripeInstance
 }
