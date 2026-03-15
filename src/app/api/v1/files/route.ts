@@ -79,12 +79,13 @@ async function handleTokenRequest(request: NextRequest) {
       type: fileType,
       method: 'PUT',
       headers: {
-        'x-vercel-blob-client-token': token,
+        'authorization': `Bearer ${token}`,
         'content-type': content_type || (fileType === 'audio' ? 'audio/mpeg' : 'image/png'),
+        'x-api-version': '7',
       },
       expires_in: '30 minutes',
       instructions: `PUT the raw file to upload_url with the headers above. The response contains { url: "..." } — use that URL in show/episode creation.`,
-      curl_example: `curl -X PUT "${uploadUrl}" -H "x-vercel-blob-client-token: ${token.slice(0, 20)}..." -H "content-type: ${content_type || 'audio/mpeg'}" --data-binary @${filename}`
+      curl_example: `curl -X PUT "${uploadUrl}" -H "authorization: Bearer <token>" -H "content-type: ${content_type || 'audio/mpeg'}" -H "x-api-version: 7" --data-binary @${filename}`
     }, { status: 200 })
   } catch (err: any) {
     console.error('Token request error:', err)
