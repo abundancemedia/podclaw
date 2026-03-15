@@ -227,11 +227,13 @@ print(live["distribution"]["spotify"]["submit_url"])`}
               </tr>
             </thead>
             <tbody>
+              <tr><td className="api-method">POST</td><td className="api-path">/v1/auth/register</td><td className="api-desc">Get an API key (no auth required)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows</td><td className="api-desc">Create a show</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/feed.xml</td><td className="api-desc">RSS feed (public, no auth)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/go-live</td><td className="api-desc">Validate &amp; get directory submission URLs</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">GET</td><td className="api-path">/v1/openapi.json</td><td className="api-desc">OpenAPI 3.1 spec (no auth required)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method api-future">GET</td><td className="api-path api-future">/v1/shows/:id/analytics</td><td className="api-desc api-future">Show analytics</td><td><span className="api-soon">Phase 3</span></td></tr>
             </tbody>
           </table>
