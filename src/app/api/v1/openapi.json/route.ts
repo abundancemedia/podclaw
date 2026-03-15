@@ -41,6 +41,36 @@ const spec = {
         }
       }
     },
+    '/files': {
+      post: {
+        summary: 'Upload audio or artwork',
+        description: 'Upload audio files (MP3/M4A, up to 500MB) or cover artwork (JPEG/PNG, up to 512KB). Returns a CDN URL to use in show/episode creation.',
+        tags: ['Files'],
+        requestBody: {
+          required: true,
+          content: {
+            'multipart/form-data': {
+              schema: {
+                type: 'object',
+                required: ['file'],
+                properties: {
+                  file: { type: 'string', format: 'binary', description: 'The file to upload' },
+                  type: { type: 'string', enum: ['audio', 'artwork'], default: 'audio', description: 'File type: "audio" or "artwork"' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '201': {
+            description: 'File uploaded',
+            content: { 'application/json': { schema: { '$ref': '#/components/schemas/FileUploadResponse' } } }
+          },
+          '400': { description: 'Invalid file type or size' },
+          '401': { description: 'Invalid or missing API key' }
+        }
+      }
+    },
     '/shows': {
       post: {
         summary: 'Create a show',
@@ -146,6 +176,17 @@ const spec = {
       }
     },
     schemas: {
+      FileUploadResponse: {
+        type: 'object',
+        properties: {
+          url: { type: 'string', format: 'uri', description: 'CDN URL for the uploaded file' },
+          type: { type: 'string', enum: ['audio', 'artwork'] },
+          content_type: { type: 'string' },
+          size: { type: 'integer', description: 'File size in bytes' },
+          filename: { type: 'string' },
+          message: { type: 'string' }
+        }
+      },
       RegisterResponse: {
         type: 'object',
         properties: {
