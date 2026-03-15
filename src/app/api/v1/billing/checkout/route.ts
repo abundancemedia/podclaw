@@ -17,9 +17,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const targetPlan = body.plan
 
-    if (!targetPlan || !['pro', 'scale'].includes(targetPlan)) {
+    if (!targetPlan || !['builder', 'pro'].includes(targetPlan)) {
+      if (targetPlan === 'scale') {
+        return NextResponse.json(
+          { error: 'Scale is a custom plan. Contact us at sales@podclaw.io to discuss your needs.' },
+          { status: 400 }
+        )
+      }
       return NextResponse.json(
-        { error: 'plan must be "pro" or "scale"' },
+        { error: 'plan must be "builder" or "pro". For Scale, contact sales@podclaw.io.' },
         { status: 400 }
       )
     }

@@ -335,45 +335,55 @@ print(live["distribution"]["spotify"]["submit_url"])`}
             <span className="tag">PRICING</span>
             <h2>Simple, Predictable Pricing</h2>
           </div>
-          <div className="pricing-grid">
+          <div className="pricing-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
             <div className="pricing-card">
               <h3>Free</h3>
               <div className="price">$0<span>/month</span></div>
               <ul className="pricing-list">
-                <li>1 show, 10 episodes/month</li>
+                <li>1 show, 5 episodes/month</li>
+                <li>500 MB storage</li>
                 <li>RSS feed + API access</li>
-                <li>Apple &amp; Spotify-valid feeds</li>
-                <li>Community support</li>
+                <li>60 requests/min</li>
               </ul>
               <a href="#waitlist" className="btn btn-secondary" style={{ textAlign: 'center' }}>Get Started</a>
-              <p className="tier-tag">Start building now</p>
+              <p className="tier-tag">Test the API</p>
             </div>
             <div className="pricing-card pop">
               <div className="badge">POPULAR</div>
-              <h3>Agent Pro</h3>
-              <div className="price">$49<span>/month</span></div>
+              <h3>Builder</h3>
+              <div className="price">$19<span>/month</span></div>
               <ul className="pricing-list">
                 <li>5 shows, 100 episodes/month</li>
-                <li>Full distribution (Apple, Spotify, YouTube, 20+)</li>
-                <li>Analytics API</li>
-                <li>Webhook events</li>
-                <li>Priority support</li>
+                <li>10 GB storage</li>
+                <li>Go-live validation + distribution</li>
+                <li>300 requests/min</li>
               </ul>
-              <a href="#waitlist" className="btn btn-primary" style={{ textAlign: 'center' }}>Choose Pro</a>
-              <p className="tier-tag">For production agents</p>
+              <a href="#waitlist" className="btn btn-primary" style={{ textAlign: 'center' }}>Choose Builder</a>
+              <p className="tier-tag">For serious projects</p>
             </div>
             <div className="pricing-card">
-              <h3>Agent Scale</h3>
-              <div className="price">$199<span>/month</span></div>
+              <h3>Pro</h3>
+              <div className="price">$49<span>/month</span></div>
               <ul className="pricing-list">
-                <li>Unlimited shows &amp; episodes</li>
-                <li>Custom RSS domains</li>
-                <li>Dedicated infrastructure</li>
-                <li>SLA guarantee (99.9%)</li>
-                <li>Concierge onboarding</li>
+                <li>25 shows, 500 episodes/month</li>
+                <li>50 GB storage</li>
+                <li>Priority support</li>
+                <li>1,000 requests/min</li>
               </ul>
-              <a href="#waitlist" className="btn btn-secondary" style={{ textAlign: 'center' }}>Contact Sales</a>
-              <p className="tier-tag">For agent platforms &amp; studios</p>
+              <a href="#waitlist" className="btn btn-secondary" style={{ textAlign: 'center' }}>Choose Pro</a>
+              <p className="tier-tag">For production pipelines</p>
+            </div>
+            <div className="pricing-card">
+              <h3>Scale</h3>
+              <div className="price" style={{ fontSize: '1.8rem' }}>Contact Us</div>
+              <ul className="pricing-list">
+                <li>Custom show + episode limits</li>
+                <li>Custom storage</li>
+                <li>SLA guarantee (99.9%)</li>
+                <li>Dedicated infrastructure</li>
+              </ul>
+              <a href="mailto:sales@podclaw.io" className="btn btn-secondary" style={{ textAlign: 'center' }}>Talk to Sales</a>
+              <p className="tier-tag">For platforms &amp; studios</p>
             </div>
           </div>
         </div>

@@ -52,13 +52,20 @@ export async function GET(request: NextRequest) {
         requests_per_minute: limits.requests_per_minute,
       },
       billing: {
-        upgrade: plan === 'free' ? 'POST /v1/billing/checkout with { "plan": "pro" } or { "plan": "scale" }' : plan === 'pro' ? 'POST /v1/billing/checkout with { "plan": "scale" }' : null,
+        upgrade: plan === 'free'
+          ? 'POST /v1/billing/checkout with { "plan": "builder" } or { "plan": "pro" }'
+          : plan === 'builder'
+            ? 'POST /v1/billing/checkout with { "plan": "pro" }'
+            : plan === 'pro'
+              ? 'Contact sales for Scale — custom limits for your needs.'
+              : null,
         manage: 'POST /v1/billing/portal — manage subscription, update payment, or cancel',
       },
       tiers: {
-        free: { price: '$0/mo', shows: 1, episodes_per_month: 10 },
-        pro: { price: '$49/mo', shows: 5, episodes_per_month: 100 },
-        scale: { price: '$199/mo', shows: 'unlimited', episodes_per_month: 'unlimited' },
+        free: { price: '$0/mo', shows: 1, episodes_per_month: 5, storage: '500 MB' },
+        builder: { price: '$19/mo', shows: 5, episodes_per_month: 100, storage: '10 GB' },
+        pro: { price: '$49/mo', shows: 25, episodes_per_month: 500, storage: '50 GB' },
+        scale: { price: 'Contact us', shows: 'Custom', episodes_per_month: 'Custom', storage: 'Custom' },
       }
     }, {
       headers: { 'X-Plan': plan }

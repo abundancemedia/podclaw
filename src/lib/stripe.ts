@@ -20,12 +20,13 @@ export function getStripe(): Stripe {
  * Set these env vars after creating products in Stripe Dashboard.
  */
 export const STRIPE_PRICES = {
+  builder: process.env.STRIPE_PRICE_BUILDER || '',
   pro: process.env.STRIPE_PRICE_PRO || '',
-  scale: process.env.STRIPE_PRICE_SCALE || '',
 }
 
 export const PLAN_NAMES: Record<string, string> = {
   free: 'Free',
-  pro: 'Agent Pro',
-  scale: 'Agent Scale',
+  builder: 'Builder',
+  pro: 'Pro',
+  scale: 'Scale',
 }

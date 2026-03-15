@@ -63,8 +63,8 @@ export async function POST(request: NextRequest) {
           // Determine plan from price ID
           const priceId = subscription.items.data[0]?.price?.id
           let plan = 'free'
-          if (priceId === STRIPE_PRICES.pro) plan = 'pro'
-          else if (priceId === STRIPE_PRICES.scale) plan = 'scale'
+          if (priceId === STRIPE_PRICES.builder) plan = 'builder'
+          else if (priceId === STRIPE_PRICES.pro) plan = 'pro'
 
           await sql`
             UPDATE api_keys SET plan = ${plan} WHERE key = ${apiKey}

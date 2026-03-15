@@ -156,8 +156,11 @@ footer { padding: 4rem 0; border-top: 1px solid var(--border); text-align: cente
 .footer-sub { font-family: var(--mono); font-size: 0.75rem; color: var(--text-2); }
 
 /* ---- RESPONSIVE ---- */
+@media (max-width: 1200px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
 @media (max-width: 992px) {
-  .hero-grid, .steps-grid, .pricing-grid, .docs-grid { grid-template-columns: 1fr; }
+  .hero-grid, .steps-grid, .pricing-grid, .docs-grid { grid-template-columns: 1fr !important; }
   .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
   .usecases-grid, .features-grid { grid-template-columns: 1fr; }
   .hero-grid { text-align: center; }

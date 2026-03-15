@@ -15,21 +15,27 @@ export interface TierLimits {
 export const TIERS: Record<string, TierLimits> = {
   free: {
     shows: 1,
-    episodes_per_month: 10,
+    episodes_per_month: 5,
     requests_per_minute: 60,
-    file_uploads_per_day: 20,
+    file_uploads_per_day: 10,
   },
-  pro: {
+  builder: {
     shows: 5,
     episodes_per_month: 100,
     requests_per_minute: 300,
+    file_uploads_per_day: 50,
+  },
+  pro: {
+    shows: 25,
+    episodes_per_month: 500,
+    requests_per_minute: 1000,
     file_uploads_per_day: 200,
   },
   scale: {
-    shows: 999999, // unlimited
-    episodes_per_month: 999999,
-    requests_per_minute: 1000,
-    file_uploads_per_day: 999999,
+    shows: 100,
+    episodes_per_month: 2000,
+    requests_per_minute: 5000,
+    file_uploads_per_day: 1000,
   },
 }
 
@@ -52,10 +58,12 @@ export async function checkShowLimit(apiKey: string, plan: string): Promise<Next
       current,
       limit: limits.shows,
       upgrade: plan === 'free'
-        ? 'Upgrade to Pro ($49/mo) for 5 shows, or Scale ($199/mo) for unlimited.'
-        : plan === 'pro'
-          ? 'Upgrade to Scale ($199/mo) for unlimited shows.'
-          : null
+        ? 'Upgrade to Builder ($19/mo) for 5 shows, or Pro ($49/mo) for 25.'
+        : plan === 'builder'
+          ? 'Upgrade to Pro ($49/mo) for 25 shows.'
+          : plan === 'pro'
+            ? 'Contact us for Scale — custom limits for your needs.'
+            : null
     }, {
       status: 429,
       headers: { 'X-Plan': plan, 'X-Limit-Shows': String(limits.shows) }
@@ -88,10 +96,12 @@ export async function checkEpisodeLimit(apiKey: string, plan: string): Promise<N
       limit: limits.episodes_per_month,
       resets: 'First of next month',
       upgrade: plan === 'free'
-        ? 'Upgrade to Pro ($49/mo) for 100 episodes/month.'
-        : plan === 'pro'
-          ? 'Upgrade to Scale ($199/mo) for unlimited episodes.'
-          : null
+        ? 'Upgrade to Builder ($19/mo) for 100 episodes/month, or Pro ($49/mo) for 500.'
+        : plan === 'builder'
+          ? 'Upgrade to Pro ($49/mo) for 500 episodes/month.'
+          : plan === 'pro'
+            ? 'Contact us for Scale — custom limits for your needs.'
+            : null
     }, {
       status: 429,
       headers: { 'X-Plan': plan, 'X-Limit-Episodes': String(limits.episodes_per_month) }
