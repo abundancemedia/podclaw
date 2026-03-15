@@ -51,6 +51,10 @@ export async function GET(request: NextRequest) {
       rate_limit: {
         requests_per_minute: limits.requests_per_minute,
       },
+      billing: {
+        upgrade: plan === 'free' ? 'POST /v1/billing/checkout with { "plan": "pro" } or { "plan": "scale" }' : plan === 'pro' ? 'POST /v1/billing/checkout with { "plan": "scale" }' : null,
+        manage: 'POST /v1/billing/portal — manage subscription, update payment, or cancel',
+      },
       tiers: {
         free: { price: '$0/mo', shows: 1, episodes_per_month: 10 },
         pro: { price: '$49/mo', shows: 5, episodes_per_month: 100 },
