@@ -42,9 +42,34 @@ const spec = {
       }
     },
     '/files': {
+      put: {
+        summary: 'Upload audio or artwork (streaming)',
+        description: 'Stream upload — send raw file bytes in the body. No multipart needed. No size limit for audio (up to 500MB). Query params: filename (required), type ("audio" or "artwork").',
+        tags: ['Files'],
+        parameters: [
+          { name: 'filename', in: 'query', required: true, schema: { type: 'string' }, example: 'ep1.mp3' },
+          { name: 'type', in: 'query', schema: { type: 'string', enum: ['audio', 'artwork'], default: 'audio' } }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'audio/mpeg': { schema: { type: 'string', format: 'binary' } },
+            'image/png': { schema: { type: 'string', format: 'binary' } },
+            'image/jpeg': { schema: { type: 'string', format: 'binary' } }
+          }
+        },
+        responses: {
+          '201': {
+            description: 'File uploaded — use the returned URL in show/episode creation',
+            content: { 'application/json': { schema: { '$ref': '#/components/schemas/FileUploadResponse' } } }
+          },
+          '400': { description: 'Invalid file type or size' },
+          '401': { description: 'Invalid or missing API key' }
+        }
+      },
       post: {
-        summary: 'Upload audio or artwork',
-        description: 'Upload audio files (MP3/M4A, up to 500MB) or cover artwork (JPEG/PNG, up to 512KB). Returns a CDN URL to use in show/episode creation.',
+        summary: 'Upload audio or artwork (multipart, <4.5MB)',
+        description: 'Multipart upload for small files. For large audio files, use PUT with raw body streaming instead.',
         tags: ['Files'],
         requestBody: {
           required: true,
@@ -55,7 +80,7 @@ const spec = {
                 required: ['file'],
                 properties: {
                   file: { type: 'string', format: 'binary', description: 'The file to upload' },
-                  type: { type: 'string', enum: ['audio', 'artwork'], default: 'audio', description: 'File type: "audio" or "artwork"' }
+                  type: { type: 'string', enum: ['audio', 'artwork'], default: 'audio' }
                 }
               }
             }
