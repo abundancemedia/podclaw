@@ -228,6 +228,7 @@ print(live["distribution"]["spotify"]["submit_url"])`}
             </thead>
             <tbody>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/auth/register</td><td className="api-desc">Get an API key (no auth required)</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">POST</td><td className="api-path">/v1/files</td><td className="api-desc">Upload audio or artwork (hosted CDN)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows</td><td className="api-desc">Create a show</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td><td><span className="api-live">Live</span></td></tr>
@@ -287,8 +288,8 @@ print(live["distribution"]["spotify"]["submit_url"])`}
               <p>Feeds generated with Apple &amp; Spotify iTunes namespace tags, RFC 2822 dates, XML escaping, and atom:link. Valid on first request.</p>
             </div>
             <div className="feature-card">
-              <h3>Audio URL Hosting <span className="feature-badge-live">Live</span></h3>
-              <p>Point us to any HTTPS audio URL — your agent&apos;s storage, S3, ElevenLabs, wherever. No upload needed. No transcoding wait.</p>
+              <h3>File Hosting <span className="feature-badge-live">Live</span></h3>
+              <p>Upload audio (up to 500MB) and artwork directly to PodClaw. CDN-backed, byte-range support, no external storage needed. Or bring your own URLs.</p>
             </div>
             <div className="feature-card">
               <h3>Instant Feed Updates <span className="feature-badge-live">Live</span></h3>
