@@ -230,16 +230,21 @@ print(live["distribution"]["spotify"]["submit_url"])`}
               <tr><td className="api-method">POST</td><td className="api-path">/v1/auth/register</td><td className="api-desc">Get an API key (no auth required)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/files</td><td className="api-desc">Upload audio or artwork (hosted CDN)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows</td><td className="api-desc">Create a show</td><td><span className="api-live">Live</span></td></tr>
-              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Get show details + status</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">PATCH</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Update show metadata</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">DELETE</td><td className="api-path">/v1/shows/:id</td><td className="api-desc">Delete show + all episodes</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/episodes</td><td className="api-desc">Publish an episode</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">PATCH</td><td className="api-path">/v1/shows/:id/episodes/:epId</td><td className="api-desc">Update an episode</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">DELETE</td><td className="api-path">/v1/shows/:id/episodes/:epId</td><td className="api-desc">Delete an episode</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/shows/:id/feed.xml</td><td className="api-desc">RSS feed (public, no auth)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">POST</td><td className="api-path">/v1/shows/:id/go-live</td><td className="api-desc">Validate &amp; get directory submission URLs</td><td><span className="api-live">Live</span></td></tr>
+              <tr><td className="api-method">GET</td><td className="api-path">/v1/billing/usage</td><td className="api-desc">Current plan, usage counts, limits</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method">GET</td><td className="api-path">/v1/openapi.json</td><td className="api-desc">OpenAPI 3.1 spec (no auth required)</td><td><span className="api-live">Live</span></td></tr>
               <tr><td className="api-method api-future">GET</td><td className="api-path api-future">/v1/shows/:id/analytics</td><td className="api-desc api-future">Show analytics</td><td><span className="api-soon">Phase 3</span></td></tr>
             </tbody>
           </table>
           <p style={{ textAlign: 'center', color: 'var(--text-2)', fontSize: '0.9rem' }}>
-            Bearer token auth on all endpoints. OpenAPI spec at launch. Feed endpoint is public for directory crawlers.
+            14 live endpoints. Bearer token auth. Rate limiting. OpenAPI spec. Feed + register endpoints are public.
           </p>
         </div>
       </section>
